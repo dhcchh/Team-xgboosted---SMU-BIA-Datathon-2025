@@ -1,0 +1,6 @@
+# global files
+.ipynb_checkpoints/
+__pycache__/
+.env
+
+# personal files
