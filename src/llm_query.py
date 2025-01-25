@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 class LLMQuery:
     def __init__(self):
         load_dotenv()
-        self.modelID = "anthropic.claude-3-haiku-20240307-v1:0"
+        self.modelId = "anthropic.claude-3-haiku-20240307-v1:0"
         self.region_name = "ap-southeast-1"
         self.client = boto3.client(
             "bedrock-runtime",
@@ -58,7 +58,7 @@ class LLMQuery:
         body = self.generate_query_body(query)
         response = self.client.invoke_model(
             body=body,
-            modelID=self.modelID,
+            modelId=self.modelId,
             contentType='application/json',
             accept='application/json'
         )

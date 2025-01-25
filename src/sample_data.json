@@ -1,0 +1,44 @@
+"nodes": [
+    {
+        "id": "Singapore",
+        "type": "country"
+    },
+    {
+        "id": "China",
+        "type": "country"
+    },
+    {
+        "id": "Cambodia",
+        "type": "country"
+    }
+]
+
+"edges": [
+    {
+        "source": "Singapore",
+        "target": "China",
+        "weight": 10,
+        "attributes": {"terrorism": 4, "security": 6, "communalism": 0}
+    },
+    {
+        "source": "Singapore",
+        "target": "Cambodia",
+        "weight": 4,
+        "attributes": {"terrorism": 4, "security": 0, "communalism": 0}
+    },
+    {
+        "source": "China",
+        "target": "Cambodia",
+        "weight": 0,
+        "attributes": {"terrorism": 0, "security": 0, "communalism": 0}
+    }
+]
+
+"text_001.json": {
+    "text": "This is an example text discussing Singapore and China.",
+    "metadata": {
+        "countries": ["Singapore", "China"],
+        "attributes": ["espionage"],
+        "date": "2023-01-01"
+    }
+}
