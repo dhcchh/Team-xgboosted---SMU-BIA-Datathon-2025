@@ -5,14 +5,14 @@ import plotly.express as px
 
 from dash import html, dcc
 
-from dataloading_utils.S3Wrapper import S3Wrapper
+from S3Wrapper import S3Wrapper
 from visualization_utils.Piechart import piechart_builder
 from visualization_utils.Linechart import line_builder
 from visualization_utils.Graph import graph_builder
 
 import pandas as pd
 
-df = pd.read_csv("leaks_processed.csv")
+WORKING_DF = pd.read_csv("leaks_processed.csv")
 
 app = dash.Dash(__name__)
 
