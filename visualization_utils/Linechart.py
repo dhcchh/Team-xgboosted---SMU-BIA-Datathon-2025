@@ -11,6 +11,13 @@ import pandas as pd
 #         }
 #     ]
 
-def line_builder():
+def line_builder(df):
+    """
+    Parameters:
+        df (pandas.Dataframe): Dataframe, refer to csv for details.
+    
+    Returns:
+        elements (list): Refer to above for the required format.
+    """
     print("To be implemented!")
     raise NotImplementedError
