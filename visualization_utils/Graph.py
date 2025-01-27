@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import dash_cytoscape as cyto
 
 # sample return call
 # elements = [
@@ -30,5 +31,37 @@ def graph_builder(df, source, category):
         elements (list): Refer to above for format of answer. Returns an undirected graph.
             Maximum 3 edges away from Singapore. 
     """
+    cyto.Cytoscape(
+        id = "network-graph",
+        elements = graph_builder(),  
+        style = {
+            "width": "100%",
+            "height": "500px"
+            },
+        layout = {
+            "name": "circle"
+            },  # Specify graph layout (e.g., circle, grid)
+        stylesheet = [
+            {
+                "selector": "node",
+                "style": {
+                    "content": "data(label)",
+                    "background-color": BG,
+                    "color": NODE,
+                    "text-valign": "center"
+                }
+            },
+            {
+                "selector": "edge",
+                "style": {
+                    "line-color": EDGE,
+                    "target-arrow-color": EDGE,
+                    "target-arrow-shape": "triangle",
+                    "curve-style": "bezier"
+                }
+            }
+        ]
+    )
+
     print("To be implemented!")
     raise NotImplementedError
