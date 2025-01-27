@@ -2,7 +2,7 @@ import pandas as pd
 
 def piechart_builder(df, source):
     """
-    Function that takes in a dataframe, "news"/"leaks", and returns the count of each category
+    Function that takes in a dataframe and source ('news'/'leaks') and returns the count of each category
     after filtering based on source.
 
     Parameters:
@@ -17,8 +17,9 @@ def piechart_builder(df, source):
     # Filter the dataset based on the source (e.g., news or leaks)
     df_filtered = df[df['source'] == source]
 
-    # Define the columns that represent the threat categories
+    # Ensure boolean columns are converted to integers for correct aggregation
     category_columns = ['terrorism', 'security', 'espionage', 'communalism']
+    df_filtered[category_columns] = df_filtered[category_columns].astype(int)
 
     # Summing up occurrences of each category across all rows
     category_counts = df_filtered[category_columns].sum().to_dict()
@@ -34,7 +35,7 @@ def piechart_builder(df, source):
 
     return result
 
-# Example usage
+# Example usage for testing
 if __name__ == "__main__":
     # Load the processed data
     df_news = pd.read_csv("Dataset/processed_news_2.csv")

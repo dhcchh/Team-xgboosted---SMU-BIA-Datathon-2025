@@ -21,12 +21,17 @@ df_leaks['source'] = 'leaks'
 # Combine datasets
 combined_df = pd.concat([df_news, df_leaks], ignore_index=True)
 
+# Convert boolean columns to integers to ensure correct aggregation
+category_columns = ['terrorism', 'security', 'espionage', 'communalism']
+combined_df[category_columns] = combined_df[category_columns].astype(int)
+
 # Initialize the Dash app
 app = dash.Dash(__name__)
 
 # Layout of the Dash app
 app.layout = html.Div([
     html.H1("Threat Category Distribution", style={'textAlign': 'center', 'color': 'white'}),
+    
     html.Label("Select Data Source:", style={'color': 'white'}),
     dcc.Dropdown(
         id='source-dropdown',
@@ -38,8 +43,9 @@ app.layout = html.Div([
         clearable=False,
         style={'width': '50%'}
     ),
+    
     dcc.Graph(id='pie-chart'),
-])
+], style={'backgroundColor': '#222222', 'padding': '20px'})
 
 # Callback function to update pie chart based on dropdown selection
 @app.callback(
@@ -55,7 +61,8 @@ def update_pie_chart(selected_source):
     fig = px.pie(
         names=labels,
         values=values,
-        title=f"Category Distribution for {selected_source.capitalize()} Data"
+        title=f"Category Distribution for {selected_source.capitalize()} Data",
+        color_discrete_sequence=px.colors.qualitative.Set1
     )
     return fig
 
