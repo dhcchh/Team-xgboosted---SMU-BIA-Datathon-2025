@@ -1,5 +1,10 @@
+import networkx as nx
 import numpy as np
 import pandas as pd
+
+from functools import reduce
+from itertools import combinations
+
 
 # sample return call
 # elements = [
@@ -15,7 +20,7 @@ import pandas as pd
 # ]
 # return elements
 
-def graph_builder(df, source, category):
+def graph_builder(df, category):
     """
     Recieves a dataframe. Runs BFS from Singapore to find the closest 3 countries. Do
     include edges between countries that are not Singapore as well.
@@ -30,5 +35,30 @@ def graph_builder(df, source, category):
         elements (list): Refer to above for format of answer. Returns an undirected graph.
             Maximum 3 edges away from Singapore. 
     """
-    print("To be implemented!")
-    raise NotImplementedError
+    G = nx.Graph()
+    combiner = lambda x, y: x or row[y]
+    for i, row in df.iterrows():
+        if reduce(combiner, category, False):
+            try:
+                ls = eval(row["countries"])
+                G.add_nodes_from(ls)
+                G.add_edges_from(combinations(ls, 2))
+            except TypeError:  # "countries" is empty
+                continue
+    elements = []
+    component = nx.subgraph(G, nx.node_connected_component(G, "Singapore"))
+    for node in component.nodes:
+        elements.append({
+            "data": {
+                "id": node,
+                "label": node
+            }
+        })
+    for edge in component.edges:
+        elements.append({
+            "data": {
+                "source": edge[0],
+                "target": edge[1]
+            }
+        })
+    return elements
