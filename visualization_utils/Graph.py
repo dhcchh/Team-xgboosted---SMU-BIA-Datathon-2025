@@ -20,15 +20,13 @@ from itertools import combinations
 # ]
 # return elements
 
-def graph_builder(df, category):
+def graph_builder(df: pd.DataFrame, category: list[str]) -> list[dict]:
     """
     Recieves a dataframe. Runs BFS from Singapore to find the closest 3 countries. Do
     include edges between countries that are not Singapore as well.
 
     Parameters:
         df (pandas.dataframe): Dataframe (refer to csv file given).
-        source(list): List of strings, possible values 
-            are ["leaks", "news"].
         category (list): List of strings, possible values 
             are ["terrorism", "security", "espionage", "communal"]
     Returns:
@@ -36,7 +34,7 @@ def graph_builder(df, category):
             Maximum 3 edges away from Singapore. 
     """
     G = nx.Graph()
-    combiner = lambda x, y: x or row[y]
+    combiner = lambda x, y: x or row[y]  # checks if text is related to the given categories
     for i, row in df.iterrows():
         if reduce(combiner, category, False):
             try:
