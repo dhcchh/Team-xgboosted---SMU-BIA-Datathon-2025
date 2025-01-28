@@ -1,56 +1,72 @@
-import numpy as np
 import pandas as pd
+import plotly.express as px
 
-def line_builder(df, source, category):
+def line_builder(df, source_list):
     """
     Parameters:
-        df (pandas.DataFrame): Dataframe containing threat data.
-        source (str): Data source, either "news" or "leaks".
-        category (str): The selected category (e.g., "terrorism", "security", etc.).
-    
+        df (pandas.DataFrame): Processed dataset containing incident information.
+        source_list (list): List of selected data sources ('news' or 'leaks').
+
     Returns:
-        elements (list): A list of dictionaries formatted for a line chart.
+        tuple: Four line charts (terrorism, security, espionage, communalism).
     """
 
-    # Filter the dataset based on the selected source (news or leaks)
-    df_filtered = df[df['source'] == source]
+    # Ensure 'source' column exists
+    if 'source' not in df.columns:
+        raise KeyError("The 'source' column is missing in the dataset.")
 
-    # Convert boolean columns to integers for aggregation
-    category_columns = ['terrorism', 'security', 'espionage', 'communalism']
-    df_filtered[category_columns] = df_filtered[category_columns].astype(int)
+    # Filter dataset based on selected sources
+    df_filtered = df[df["source"].isin(source_list)]
 
-    # Ensure date columns are properly combined and handled
-    df_filtered['date'] = pd.to_datetime(df_filtered[['year', 'month', 'day']], errors='coerce')
+    # Ensure 'year' column exists
+    if 'year' not in df_filtered.columns:
+        raise KeyError("The 'year' column is missing in the dataset.")
 
-    # Group data by year-month and sum numeric columns only
-    time_series = df_filtered.groupby(df_filtered['date'].dt.to_period("M"))[category_columns].sum().reset_index()
-    time_series['date'] = time_series['date'].astype(str)  # Convert to string for visualization
+    # Ensure 'month' column exists, defaulting to January if missing
+    if 'month' not in df_filtered.columns:
+        df_filtered['month'] = 1  # Default to January
 
-    # Prepare data for the line chart
-    result = [
-        {
-            "x": time_series['date'].tolist(),
-            "y": time_series[category].tolist(),
-            "type": "line",
-            "name": f"{category.capitalize()} Trends"
-        }
-    ]
+    # Convert 'year' and 'month' to numeric values, handling errors
+    df_filtered["year"] = pd.to_numeric(df_filtered["year"], errors="coerce")
+    df_filtered["month"] = pd.to_numeric(df_filtered["month"], errors="coerce")
 
-    return result
+    # Remove invalid year values (year=0 or NaN)
+    df_filtered = df_filtered[df_filtered["year"] > 1900]  # Assuming valid years start from 1900
 
+    # Ensure month is within valid range (1-12)
+    df_filtered = df_filtered[df_filtered["month"].between(1, 12)]
 
-# Example usage for testing
-if __name__ == "__main__":
-    # Load the processed data
-    df_news = pd.read_csv("Dataset/processed_news_2.csv")
-    df_news['source'] = 'news'
+    # Convert year/month into datetime format safely
+    df_filtered['date'] = pd.to_datetime(
+        df_filtered.assign(day=1)[['year', 'month', 'day']],
+        errors='coerce'
+    )
 
-    df_leaks = pd.read_csv("Dataset/processed_leaks_2.csv")
-    df_leaks['source'] = 'leaks'
+    # Drop rows where datetime conversion failed
+    df_filtered = df_filtered.dropna(subset=['date'])
 
-    # Combine both datasets for flexibility
-    combined_df = pd.concat([df_news, df_leaks], ignore_index=True)
+    # Aggregate counts for each category over time
+    category_columns = ["terrorism", "security", "espionage", "communalism"]
+    df_grouped = df_filtered.groupby("date")[category_columns].sum().reset_index()
 
-    # Generate line chart data for "news" source
-    line_chart_data = line_builder(combined_df, "news", "security")
-    print(line_chart_data)
+    # Create line charts for each category
+    line_figs = {}
+    for category in category_columns:
+        fig = px.line(
+            df_grouped,
+            x="date",
+            y=category,
+            title=f"Trend of {category.capitalize()} Incidents",
+            labels={"date": "Date", category: "Incident Count"},
+            markers=True
+        )
+        fig.update_layout(
+            xaxis_title="Time",
+            yaxis_title="Count",
+            xaxis=dict(showgrid=False),
+            yaxis=dict(showgrid=True),
+            plot_bgcolor="white"
+        )
+        line_figs[category] = fig
+
+    return line_figs["terrorism"], line_figs["security"], line_figs["espionage"], line_figs["communalism"]

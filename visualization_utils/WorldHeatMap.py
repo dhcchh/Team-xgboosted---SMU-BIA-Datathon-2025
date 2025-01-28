@@ -1,29 +1,33 @@
 import pandas as pd
 import plotly.express as px
 
-def heatmap_builder(df, source):
+def heatmap_builder(df, source_list):
     """
     Parameters:
         df (pandas.DataFrame): Processed dataset containing geolocation information.
-        source (str): Data source ('news' or 'leaks').
+        source_list (list): List of selected data sources ('news' or 'leaks').
 
     Returns:
         fig (plotly.graph_objects.Figure): Heatmap figure.
     """
 
-    # Add a 'source' column if it does not exist
+    # Ensure 'source' column exists
     if 'source' not in df.columns:
         raise KeyError("The 'source' column is missing in the dataset.")
 
-    # Filter based on selected source
-    df_filtered = df[df['source'] == source]
+    # Filter dataset based on selected sources (handles multiple sources)
+    df_filtered = df[df["source"].isin(source_list)]
 
     # Ensure 'countries' column exists
     if 'countries' not in df_filtered.columns:
         raise KeyError("The 'countries' column is missing in the dataset.")
 
-    # Exploding the list of countries (handling comma-separated values if necessary)
-    df_filtered['countries'] = df_filtered['countries'].apply(lambda x: x.split(', ') if isinstance(x, str) else x)
+    # Convert country entries into lists if stored as strings
+    df_filtered['countries'] = df_filtered['countries'].apply(
+        lambda x: x.split(', ') if isinstance(x, str) else x
+    )
+
+    # Explode the 'countries' column to have one country per row
     df_exploded = df_filtered.explode('countries')
 
     # Count occurrences of each country
@@ -38,18 +42,19 @@ def heatmap_builder(df, source):
         color='Count',
         hover_name='Country',
         color_continuous_scale='Viridis',
-        title=f"Heatmap of Incidents from {source.capitalize()} Data"
+        title=f"Heatmap of Incidents from {', '.join(source_list).capitalize()} Data"
     )
 
     fig.update_geos(
         projection_type="natural earth",
         showcoastlines=True,
         coastlinecolor="RebeccaPurple",
-        showland=True, landcolor="LightGray"
+        showland=True,
+        landcolor="LightGray"
     )
 
     fig.update_layout(
-        margin={"r":0,"t":30,"l":0,"b":0},
+        margin={"r":0, "t":30, "l":0, "b":0},
         coloraxis_colorbar=dict(title="Incident Count")
     )
 
