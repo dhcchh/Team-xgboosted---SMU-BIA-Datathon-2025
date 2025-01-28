@@ -35,6 +35,7 @@ TITLE = color_config["title"]
 # Initialize Dash app
 app = dash.Dash(__name__)
 
+
 def apply_common_aesthetics(fig, title_color=TITLE):
     """Apply consistent styling across all figures."""
     fig.update_layout(
@@ -45,12 +46,14 @@ def apply_common_aesthetics(fig, title_color=TITLE):
     )
     return fig
 
+
 # Define layout
 app.layout = html.Div(
     style={"backgroundColor": BG, "padding": "20px"},
 
     children=[
-        html.H1("ISD Monitoring Dashboard", style={"textAlign": "center", "color": TITLE, "fontfamily": "Arial", "fontsize": "36px"}),
+        html.H1("ISD Monitoring Dashboard",
+                style={"textAlign": "center", "color": TITLE, "fontfamily": "Arial", "fontsize": "36px"}),
 
         ##############
         # Heatmap #
@@ -122,7 +125,8 @@ app.layout = html.Div(
             id="network-graph",
             elements=[],
             style={"width": "100%", "height": "700px"},
-            layout={"name": "cose"},  # Force-directed layout to spread nodes better
+            #layout={"name": "cose"},  # Force-directed layout to spread nodes better
+            layout={"name": "breadthfirst", "roots": ["Singapore"]},
             stylesheet=[
                 {
                     "selector": "node",
@@ -143,16 +147,16 @@ app.layout = html.Div(
                     "style": {
                         "line-color": "#BBBBBB",  # Light gray edges
                         "target-arrow-color": "#BBBBBB",
-                        "target-arrow-shape": "triangle",
+                        "target-arrow-shape": "none",
                         "curve-style": "bezier"
-            }
-        }
+                    }
+                }
+            ]
+        )
+
     ]
 )
 
-
-    ]
-)
 
 ###########################
 # CALLBACKS FOR UPDATING #
@@ -166,6 +170,7 @@ app.layout = html.Div(
 def update_heatmap(source_list):
     return apply_common_aesthetics(heatmap_builder(WORKING_DF, source_list))
 
+
 # Pie & Bar Chart Callback
 @app.callback(
     [Output("piechart", "figure"), Output("barchart", "figure")],
@@ -175,6 +180,7 @@ def update_piebar_chart(source_list):
     piechart = apply_common_aesthetics(piechart_builder(WORKING_DF, source_list))
     barchart = apply_common_aesthetics(barchart_builder(WORKING_DF, source_list))
     return piechart, barchart
+
 
 # Line Chart Callback
 @app.callback(
@@ -191,18 +197,15 @@ def update_linechart(source_list):
             apply_common_aesthetics(fig_e),
             apply_common_aesthetics(fig_c))
 
+
 # Network Graph Callback
 @app.callback(
     Output("network-graph", "elements"),
     Input("graph-checkbox", "value")
 )
 def update_network_graph(selected_categories):
-    if not selected_categories:
-        return []
-    elements = []
-    for category in selected_categories:
-        elements.extend(graph_builder(WORKING_DF, category))
-    return elements
+    return graph_builder(WORKING_DF, selected_categories)
+
 
 # Run the Dash app
 if __name__ == "__main__":

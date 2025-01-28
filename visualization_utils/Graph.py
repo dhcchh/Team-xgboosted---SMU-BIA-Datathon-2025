@@ -1,46 +1,64 @@
 import networkx as nx
+import numpy as np
+import pandas as pd
 
-def graph_builder(df, category):
+from functools import reduce
+from itertools import combinations
+
+
+# sample return call
+# elements = [
+#     # Nodes
+#     {"data": {"id": "A", "label": "Node A"}},
+#     {"data": {"id": "B", "label": "Node B"}},
+#     {"data": {"id": "C", "label": "Node C"}},
+
+#     # Edges
+#     {"data": {"source": "A", "target": "B"}},  # Edge from A to B
+#     {"data": {"source": "A", "target": "C"}},  # Edge from A to C
+#     {"data": {"source": "B", "target": "C"}},  # Edge from B to C
+# ]
+# return elements
+
+def graph_builder(df: pd.DataFrame, category: list[str]) -> list[dict]:
     """
-    Builds a network graph based on relationships between countries for a specific category.
+    Recieves a dataframe. Runs BFS from Singapore to find the closest 3 countries. Do
+    include edges between countries that are not Singapore as well.
 
     Parameters:
-        df (pd.DataFrame): The dataset containing relationships and categories.
-        category (str): The specific category to filter on (e.g., 'terrorism', 'security').
-
+        df (pandas.dataframe): Dataframe (refer to csv file given).
+        category (list): List of strings, possible values
+            are ["terrorism", "security", "espionage", "communal"]
     Returns:
-        list: Elements for Dash Cytoscape (nodes and edges).
+        elements (list): Refer to above for format of answer. Returns an undirected graph.
+            Maximum 3 edges away from Singapore.
     """
-
-    # Ensure the category exists in the dataframe
-    if category not in df.columns:
-        raise ValueError(f"Category '{category}' not found in the dataset.")
-
-    # Filter rows where the selected category is True
-    filtered_df = df[df[category] == True]
-
-    # Ensure the 'countries' column exists
-    if 'countries' not in filtered_df.columns:
-        raise ValueError("The dataset must contain a 'countries' column.")
-
-    # Process countries into a list of tuples (country pairs)
-    filtered_df['countries'] = filtered_df['countries'].apply(
-        lambda x: x.split(', ') if isinstance(x, str) else []
-    )
-    edges = [
-        (pair[0], pair[1]) for countries in filtered_df['countries']
-        for pair in zip(countries[:-1], countries[1:])
-    ]
-
-    # Build the graph using NetworkX
     G = nx.Graph()
-    G.add_edges_from(edges)
-
-    # Format the nodes and edges for Cytoscape
-    elements = [
-        {"data": {"id": node, "label": node}} for node in G.nodes()
-    ] + [
-        {"data": {"source": edge[0], "target": edge[1]}} for edge in G.edges()
-    ]
-
+    combiner = lambda x, y: x or row[y]  # checks if text is related to the given categories
+    for i, row in df.iterrows():
+        if reduce(combiner, category, False):
+            try:
+                ls = eval(row["countries"])
+                G.add_nodes_from(ls)
+                G.add_edges_from(combinations(ls, 2))
+            except TypeError:  # "countries" is empty
+                continue
+    elements = []
+    if "Singapore" not in G.nodes:
+        return elements
+    component = nx.subgraph(G, nx.node_connected_component(G, "Singapore"))
+    for node in component.nodes:
+        elements.append({
+            "data": {
+                "id": node,
+                "label": node
+            }
+        })
+    for edge in component.edges:
+        elements.append({
+            "data": {
+                "source": edge[0],
+                "target": edge[1]
+            }
+        })
     return elements
