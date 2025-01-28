@@ -1,67 +1,46 @@
-import numpy as np
-import pandas as pd
-import dash_cytoscape as cyto
+import networkx as nx
 
-# sample return call
-# elements = [
-#     # Nodes
-#     {"data": {"id": "A", "label": "Node A"}},
-#     {"data": {"id": "B", "label": "Node B"}},
-#     {"data": {"id": "C", "label": "Node C"}},
-
-#     # Edges
-#     {"data": {"source": "A", "target": "B"}},  # Edge from A to B
-#     {"data": {"source": "A", "target": "C"}},  # Edge from A to C
-#     {"data": {"source": "B", "target": "C"}},  # Edge from B to C
-# ]
-# return elements
-
-def graph_builder(df, source, category):
+def graph_builder(df, category):
     """
-    Recieves a dataframe. Runs BFS from Singapore to find the closest 3 countries. Do
-    include edges between countries that are not Singapore as well.
+    Builds a network graph based on relationships between countries for a specific category.
 
     Parameters:
-        df (pandas.dataframe): Dataframe (refer to csv file given).
-        source(list): List of strings, possible values 
-            are ["leaks", "news"].
-        category (list): List of strings, possible values 
-            are ["terrorism", "security", "espionage", "communal"]
-    Returns:
-        elements (list): Refer to above for format of answer. Returns an undirected graph.
-            Maximum 3 edges away from Singapore. 
-    """
-    cyto.Cytoscape(
-        id = "network-graph",
-        elements = graph_builder(),  
-        style = {
-            "width": "100%",
-            "height": "500px"
-            },
-        layout = {
-            "name": "circle"
-            },  # Specify graph layout (e.g., circle, grid)
-        stylesheet = [
-            {
-                "selector": "node",
-                "style": {
-                    "content": "data(label)",
-                    "background-color": BG,
-                    "color": NODE,
-                    "text-valign": "center"
-                }
-            },
-            {
-                "selector": "edge",
-                "style": {
-                    "line-color": EDGE,
-                    "target-arrow-color": EDGE,
-                    "target-arrow-shape": "triangle",
-                    "curve-style": "bezier"
-                }
-            }
-        ]
-    )
+        df (pd.DataFrame): The dataset containing relationships and categories.
+        category (str): The specific category to filter on (e.g., 'terrorism', 'security').
 
-    print("To be implemented!")
-    raise NotImplementedError
+    Returns:
+        list: Elements for Dash Cytoscape (nodes and edges).
+    """
+
+    # Ensure the category exists in the dataframe
+    if category not in df.columns:
+        raise ValueError(f"Category '{category}' not found in the dataset.")
+
+    # Filter rows where the selected category is True
+    filtered_df = df[df[category] == True]
+
+    # Ensure the 'countries' column exists
+    if 'countries' not in filtered_df.columns:
+        raise ValueError("The dataset must contain a 'countries' column.")
+
+    # Process countries into a list of tuples (country pairs)
+    filtered_df['countries'] = filtered_df['countries'].apply(
+        lambda x: x.split(', ') if isinstance(x, str) else []
+    )
+    edges = [
+        (pair[0], pair[1]) for countries in filtered_df['countries']
+        for pair in zip(countries[:-1], countries[1:])
+    ]
+
+    # Build the graph using NetworkX
+    G = nx.Graph()
+    G.add_edges_from(edges)
+
+    # Format the nodes and edges for Cytoscape
+    elements = [
+        {"data": {"id": node, "label": node}} for node in G.nodes()
+    ] + [
+        {"data": {"source": edge[0], "target": edge[1]}} for edge in G.edges()
+    ]
+
+    return elements
