@@ -1,3 +1,4 @@
+
 import pandas as pd
 import plotly.express as px
 
@@ -17,6 +18,7 @@ def line_builder(df, source_list):
 
     # Filter dataset based on selected sources
     df_filtered = df[df["source"].isin(source_list)]
+    df_filtered = df_filtered[df_filtered['keyword'] == True]
 
     # Ensure 'year' column exists
     if 'year' not in df_filtered.columns:
