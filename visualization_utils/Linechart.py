@@ -8,7 +8,7 @@ def line_builder(df, source_list):
         source_list (list): List of selected data sources ('news' or 'leaks').
 
     Returns:
-        tuple: Four line charts (terrorism, security, espionage, communalism).
+        tuple: Four line charts (terrorism, cyber_security, espionage, communalism).
     """
 
     # Ensure 'source' column exists
@@ -46,7 +46,7 @@ def line_builder(df, source_list):
     df_filtered = df_filtered.dropna(subset=['date'])
 
     # Aggregate counts for each category over time
-    category_columns = ["terrorism", "security", "espionage", "communalism"]
+    category_columns = ["terrorism", "cyber_security", "espionage", "communalism"]
     df_grouped = df_filtered.groupby("date")[category_columns].sum().reset_index()
 
     # Create line charts for each category
@@ -69,4 +69,4 @@ def line_builder(df, source_list):
         )
         line_figs[category] = fig
 
-    return line_figs["terrorism"], line_figs["security"], line_figs["espionage"], line_figs["communalism"]
+    return line_figs["terrorism"], line_figs["cyber_security"], line_figs["espionage"], line_figs["communalism"]

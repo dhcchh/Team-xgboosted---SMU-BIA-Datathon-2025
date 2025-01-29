@@ -22,7 +22,7 @@ NEWS_DF["source"] = "news"
 # Combine datasets
 WORKING_DF = pd.concat([LEAKS_DF, NEWS_DF], ignore_index=True)
 
-# Load color configuration
+# Load color configuratiore
 with open("./visualization_utils/config/colour_config.json", "r") as file:
     color_config = json.load(file)
 BG = color_config["background"]
@@ -113,11 +113,11 @@ app.layout = html.Div(
             id="graph-checkbox",
             options=[
                 {"label": "Terrorism", "value": "terrorism"},
-                {"label": "Security", "value": "security"},
+                {"label": "Cybersecurity", "value": "cyber_security"},
                 {"label": "Espionage", "value": "espionage"},
                 {"label": "Communalism", "value": "communalism"}
             ],
-            value=["security"],  # Default selection
+            value=["cyber_security"],  # Default selection
             inline=True,
             style={"textAlign": "center", "marginBottom": "20px", "color": FONTCOLOR}
         ),

@@ -28,7 +28,7 @@ def graph_builder(df: pd.DataFrame, category: list[str]) -> list[dict]:
     Parameters:
         df (pandas.dataframe): Dataframe (refer to csv file given).
         category (list): List of strings, possible values
-            are ["terrorism", "security", "espionage", "communal"]
+            are ["terrorism", "cyber_security", "espionage", "communal"]
     Returns:
         elements (list): Refer to above for format of answer. Returns an undirected graph.
             Maximum 3 edges away from Singapore.
