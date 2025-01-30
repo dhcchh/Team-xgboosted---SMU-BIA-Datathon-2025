@@ -39,7 +39,7 @@ venv\Scripts\activate     # For Windows
 2. Install Required Python Packages
 Once inside the virtual environment, install dependencies:
 ```
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 --- 
 ## Running the Dash App 
