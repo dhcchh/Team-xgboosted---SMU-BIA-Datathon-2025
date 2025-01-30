@@ -18,7 +18,7 @@ def barchart_builder(df, source):
     source_df = df.copy()
     source_df = source_df[source_df["source"].isin(source)]
 
-    category_columns = ['terrorism', 'security', 'espionage', 'communalism']
+    category_columns = ['terrorism', 'cyber_security', 'espionage', 'communalism']
     source_df[category_columns] = source_df[category_columns].astype(int)
     category_counts = source_df[category_columns].sum()
 
@@ -29,7 +29,7 @@ def barchart_builder(df, source):
 
     # Define the color mapping to match the pie chart
     color_map = {
-        "security": "#636efa",     # Blue (same as pie chart)
+        "cyber_security": "#636efa",     # Blue (same as pie chart)
         "terrorism": "#EF553B",    # Red
         "communalism": "#00cc96",  # Green
         "espionage": "#ab63fa"     # Purple

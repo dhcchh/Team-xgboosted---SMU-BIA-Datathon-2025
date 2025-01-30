@@ -18,7 +18,7 @@ def line_builder(df, source_list):
 
     # Filter dataset based on selected sources
     df_filtered = df[df["source"].isin(source_list)]
-    df_filtered = df_filtered[df_filtered['keyword'] == True]
+    df_filtered = df_filtered[df_filtered['year'] >= 2000]
 
     # Ensure 'year' column exists
     if 'year' not in df_filtered.columns:
@@ -48,7 +48,7 @@ def line_builder(df, source_list):
     df_filtered = df_filtered.dropna(subset=['date'])
 
     # Aggregate counts for each category over time
-    category_columns = ["terrorism", "security", "espionage", "communalism"]
+    category_columns = ["terrorism", "cyber_security", "espionage", "communalism"]
     df_grouped = df_filtered.groupby("date")[category_columns].sum().reset_index()
 
     # Create line charts for each category
@@ -71,4 +71,4 @@ def line_builder(df, source_list):
         )
         line_figs[category] = fig
 
-    return line_figs["terrorism"], line_figs["security"], line_figs["espionage"], line_figs["communalism"]
+    return line_figs["terrorism"], line_figs["cyber_security"], line_figs["espionage"], line_figs["communalism"]

@@ -1,7 +1,7 @@
 import pandas as pd
 import plotly.express as px
 
-CATEGORY_COLUMNS = ['terrorism', 'security', 'espionage', 'communalism']
+CATEGORY_COLUMNS = ['terrorism', 'cyber_security', 'espionage', 'communalism']
 
 def piechart_builder(df, source):
     """
