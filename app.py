@@ -52,8 +52,10 @@ app.layout = html.Div(
     style={"backgroundColor": BG, "padding": "20px"},
 
     children=[
-        html.H1("ISD Monitoring Dashboard",
-                style={"textAlign": "center", "color": TITLE, "fontfamily": "Arial", "fontsize": "36px"}),
+        html.H1(
+            "ISD Monitoring Dashboard",
+            style={"textAlign": "center", "color": TITLE, "fontfamily": "Arial", "fontsize": "36px"}
+        ),
 
         ##############
         # Heatmap #
@@ -64,12 +66,17 @@ app.layout = html.Div(
             options=[{"label": "News", "value": "news"}, {"label": "Leaks", "value": "leaks"}],
             value=["news", "leaks"],
             inline=True,
-            style={"textAlign": "center", "marginBottom": "20px", "color": FONTCOLOR}
+            style={"textAlign": "center", "marginBottom": "10px", "color": FONTCOLOR}
         ),
         dcc.Graph(id="heatmap-graph"),
+        html.P(
+            "This heatmap provides a geographical visualization of threats. Lighter regions indicate higher "
+            "frequency of incidents. This graph helps identify hotspots of threat activity globally.",
+            style={"textAlign": "center", "color": FONTCOLOR, "padding": "10px"}
+        ),
 
         ###################
-        # Pie & Bar chart #
+        # Pie & Bar Chart #
         ###################
         html.H2("Pie & Bar Chart", style={"textAlign": "center", "color": TITLE}),
         dcc.Checklist(
@@ -77,12 +84,17 @@ app.layout = html.Div(
             options=[{"label": "News", "value": "news"}, {"label": "Leaks", "value": "leaks"}],
             value=["news", "leaks"],
             inline=True,
-            style={"textAlign": "center", "marginBottom": "20px", "color": FONTCOLOR}
+            style={"textAlign": "center", "marginBottom": "10px", "color": FONTCOLOR}
         ),
         html.Div([
             dcc.Graph(id="piechart", style={"width": "45%", "display": "inline-block"}),
             dcc.Graph(id="barchart", style={"width": "45%", "display": "inline-block"})
         ], style={"display": "flex", "justifyContent": "center", "gap": "20px"}),
+        html.P(
+            "The pie chart displays the proportional distribution of different threat categories. The bar chart "
+            "provides the exact count for each category, making it easier to compare specific values.",
+            style={"textAlign": "center", "color": FONTCOLOR, "padding": "10px"}
+        ),
 
         ###############
         # Line Charts #
@@ -93,7 +105,7 @@ app.layout = html.Div(
             options=[{"label": "News", "value": "news"}, {"label": "Leaks", "value": "leaks"}],
             value=["news", "leaks"],
             inline=True,
-            style={"textAlign": "center", "marginBottom": "20px", "color": FONTCOLOR}
+            style={"textAlign": "center", "marginBottom": "10px", "color": FONTCOLOR}
         ),
         html.Div(
             children=[
@@ -103,6 +115,11 @@ app.layout = html.Div(
                 dcc.Graph(id="linechart_c", style={"width": "100%"})
             ],
             style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "20px"}
+        ),
+        html.P(
+            "These line charts depict trends in the occurrence of different threats over time. By analyzing these graphs, "
+            "you can spot spikes, seasonal variations, or long-term patterns in threat activity.",
+            style={"textAlign": "center", "color": FONTCOLOR, "padding": "10px"}
         ),
 
         #################
@@ -119,13 +136,12 @@ app.layout = html.Div(
             ],
             value=["cyber_security"],  # Default selection
             inline=True,
-            style={"textAlign": "center", "marginBottom": "20px", "color": FONTCOLOR}
+            style={"textAlign": "center", "marginBottom": "10px", "color": FONTCOLOR}
         ),
         cyto.Cytoscape(
             id="network-graph",
             elements=[],
             style={"width": "100%", "height": "700px"},
-            #layout={"name": "cose"},  # Force-directed layout to spread nodes better
             layout={"name": "breadthfirst", "roots": ["Singapore"]},
             stylesheet=[
                 {
@@ -152,10 +168,15 @@ app.layout = html.Div(
                     }
                 }
             ]
+        ),
+        html.P(
+            "This network graph shows the connections between countries based on shared threat incidents. Clusters "
+            "indicate regional connections or geopolitical ties, while isolated nodes represent independent threats.",
+            style={"textAlign": "center", "color": FONTCOLOR, "padding": "10px"}
         )
-
     ]
 )
+
 
 
 ###########################

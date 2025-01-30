@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+import numpy as np
 
 def heatmap_builder(df, source_list):
     """
@@ -8,7 +9,7 @@ def heatmap_builder(df, source_list):
         source_list (list): List of selected data sources ('news' or 'leaks').
 
     Returns:
-        fig (plotly.graph_objects.Figure): Heatmap figure.
+        fig (plotly.graph_objects.Figure): Heatmap figure with consistent color scaling.
     """
 
     # Ensure 'source' column exists
@@ -34,28 +35,46 @@ def heatmap_builder(df, source_list):
     country_counts = df_exploded['countries'].value_counts().reset_index()
     country_counts.columns = ['Country', 'Count']
 
-    # Create a choropleth heatmap using Plotly
+    # Calculate range for color scaling
+    min_count = country_counts["Count"].min()
+    max_count = country_counts["Count"].max()
+    range_color = [min_count, max_count]  # Ensuring full range is covered
+
+    import numpy as np
+
+    # Apply logarithmic transformation to prevent outliers from skewing scale
+    country_counts["Normalized Count"] = np.log1p(country_counts["Count"])  # log(Count + 1) to avoid log(0)
+
     fig = px.choropleth(
         country_counts,
         locations='Country',
         locationmode='country names',
-        color='Count',
+        color='Normalized Count',  # Use log-transformed values for better distinction
         hover_name='Country',
         color_continuous_scale='Viridis',
         title=f"Heatmap of Incidents from {', '.join(source_list).capitalize()} Data"
-    )
+)
+
+
 
     fig.update_geos(
         projection_type="natural earth",
         showcoastlines=True,
-        coastlinecolor="RebeccaPurple",
+        coastlinecolor="black",  # Makes coastlines more visible
         showland=True,
         landcolor="LightGray"
-    )
+)
 
     fig.update_layout(
-        margin={"r":0, "t":30, "l":0, "b":0},
+        title={
+            "text": f"Heatmap of Incidents from {', '.join(source_list).capitalize()} Data",
+            "x": 0.5,  # Center the title
+            "xanchor": "center",
+            "yanchor": "top",
+            "font": dict(size=20)
+        },
+        margin={"r": 0, "t": 30, "l": 0, "b": 0},
         coloraxis_colorbar=dict(title="Incident Count")
-    )
+)
 
     return fig
