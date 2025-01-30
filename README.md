@@ -25,7 +25,7 @@ Make sure the following files and folders are present in the working directory, 
 ```
 Make sure your current working directory is set to the folder where the required files are located. You can do so using:
 ```
-cd /yourpathtodirectory/dash_app
+cd /your/path/to/directory/dash_app
 ```
 
 ### B. Set Up the Environment 
