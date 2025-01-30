@@ -29,7 +29,7 @@ cd /your/path/to/directory/dash_app
 ```
 
 ### B. Set Up the Environment 
-1. Create and Activate a Virtual Environment (Optional, but recommended)
+1. Create and Activate a Virtual Environment (optional, but recommended). 
 It’s good practice to use a virtual environment to avoid dependency conflicts. Enter the following commands in your machine's terminal. 
 ```
 python -m venv venv
