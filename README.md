@@ -42,7 +42,7 @@ Once inside the virtual environment, install dependencies:
 python -m pip install -r requirements.txt
 ```
 --- 
-## Running the Dash App 
+## 3. Running the Dash App 
 ### A. Start the Local Server 
 Run the following command: 
 ```
