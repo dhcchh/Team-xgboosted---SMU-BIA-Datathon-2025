@@ -53,6 +53,7 @@ If everything is set up correctly, you will see an output like:
 ```
 Running on http://127.0.0.1:8050/
 ```
+This means that the application is running locally on port 8050 of your machine. No internet connectivity is required.  
 ### B. Open the App in Your Browser
 1. Copy the local server URL from the terminal.
 2. Open any web browser and paste the URL into the address bar. 
