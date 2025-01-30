@@ -9,7 +9,7 @@ def line_builder(df, source_list):
         source_list (list): List of selected data sources ('news' or 'leaks').
 
     Returns:
-        tuple: Four line charts (terrorism, security, espionage, communalism).
+        tuple: Four line charts (terrorism, cyber_security, espionage, communalism).
     """
 
     # Ensure 'source' column exists
