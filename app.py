@@ -164,7 +164,8 @@ app.layout = html.Div(
                         "line-color": "#BBBBBB",  # Light gray edges
                         "target-arrow-color": "#BBBBBB",
                         "target-arrow-shape": "none",
-                        "curve-style": "bezier"
+                        "curve-style": "bezier",
+                        "label": "data(rows)"
                     }
                 }
             ]

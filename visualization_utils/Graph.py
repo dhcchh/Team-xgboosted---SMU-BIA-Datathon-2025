@@ -40,7 +40,11 @@ def graph_builder(df: pd.DataFrame, category: list[str]) -> list[dict]:
             try:
                 ls = eval(row["countries"])
                 G.add_nodes_from(ls)
-                G.add_edges_from(combinations(ls, 2))
+                for u, v in combinations(ls, 2):
+                    if G.has_edge(u, v):
+                        G[u][v]['label'].append(str(i))
+                    else:
+                        G.add_edge(u, v, label=[str(i)])
             except TypeError:  # "countries" is empty
                 continue
     elements = []
@@ -54,11 +58,12 @@ def graph_builder(df: pd.DataFrame, category: list[str]) -> list[dict]:
                 "label": node
             }
         })
-    for edge in component.edges:
+    for u, v, data in component.edges(data=True):
         elements.append({
             "data": {
-                "source": edge[0],
-                "target": edge[1]
+                "source": u,
+                "target": v,
+                "rows": data['label']
             }
         })
     return elements
