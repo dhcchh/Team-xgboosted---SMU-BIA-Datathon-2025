@@ -68,7 +68,22 @@ app.layout = html.Div(
             inline=True,
             style={"textAlign": "center", "marginBottom": "10px", "color": FONTCOLOR}
         ),
-        dcc.Graph(id="heatmap-graph"),
+        html.Div(
+            style={"display": "flex", "justifyContent": "center", "gap": "20px"},
+            children = [
+                dcc.Graph(
+                    id="heatmap-graph",
+                    config={"displayModeBar": True}  
+                ,
+                style={
+                    "display": "flex",
+                    "justifyContent": "center",
+                    "alignItems": "center",
+                    "width": "80%",
+                    "height": "80vh"
+                })
+            ]
+        ),
         html.P(
             "This heatmap provides a geographical visualization of threats. Lighter regions indicate higher "
             "frequency of incidents. This graph helps identify hotspots of threat activity globally.",
