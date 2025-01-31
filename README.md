@@ -52,9 +52,3 @@ This means that the application is running locally on port 8050 of your machine.
 ### B. Open the App in Your Browser
 1. Copy the local server URL from the terminal.
 2. Open any web browser and paste the URL into the address bar. 
-
-# Features 
-
-# Data Processing 
-
-# Visualisations 
