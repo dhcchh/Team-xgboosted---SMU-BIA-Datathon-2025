@@ -1,4 +1,3 @@
-
 import pandas as pd
 import plotly.express as px
 
@@ -47,8 +46,19 @@ def line_builder(df, source_list):
     # Drop rows where datetime conversion failed
     df_filtered = df_filtered.dropna(subset=['date'])
 
-    # Aggregate counts for each category over time
+    # Define threat categories
     category_columns = ["terrorism", "cyber_security", "espionage", "communalism"]
+
+    # Ensure categories are boolean (convert from any other data type)
+    df_filtered[category_columns] = df_filtered[category_columns].astype(bool)
+
+    # Add 'keywords' column: If any category is True → 'keywords' is True, otherwise False
+    df_filtered["keywords"] = df_filtered[category_columns].any(axis=1)
+
+    # **Filter dataset to keep only rows where 'keywords' is True**
+    df_filtered = df_filtered[df_filtered["keywords"] == True]
+
+    # Aggregate counts for each category over time
     df_grouped = df_filtered.groupby("date")[category_columns].sum().reset_index()
 
     # Create line charts for each category
