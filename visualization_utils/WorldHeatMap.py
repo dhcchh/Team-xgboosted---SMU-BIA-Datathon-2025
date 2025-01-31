@@ -1,13 +1,12 @@
 import pandas as pd
 import plotly.express as px
 
-CUTOFF = 20
-
-def heatmap_builder(df, source_list):
+def heatmap_builder(df, source_list, cutoff):
     """
     Parameters:
         df (pandas.DataFrame): Processed dataset containing geolocation information.
         source_list (list): List of selected data sources ('news' or 'leaks').
+        cutoff (int): Minimum number of cases for country to be shown.
 
     Returns:
         fig (plotly.graph_objects.Figure): Heatmap figure with consistent color scaling.
@@ -26,7 +25,7 @@ def heatmap_builder(df, source_list):
     df_exploded = df_filtered.explode('countries')
 
     country_counts = df_exploded['countries'].value_counts().reset_index()
-    country_counts = country_counts[country_counts['count'] >= CUTOFF]
+    country_counts = country_counts[country_counts['count'] >= cutoff]
     country_counts.columns = ['Country', 'Count']
 
     fig = px.scatter_geo(
@@ -40,7 +39,6 @@ def heatmap_builder(df, source_list):
         projection="equirectangular",
         size_max=80
     )
-
     fig.update_layout(
         margin={"r": 0, "t": 30, "l": 0, "b": 0},
         geo=dict(
@@ -50,8 +48,8 @@ def heatmap_builder(df, source_list):
             oceancolor="#1B2444",  
             landcolor="#161D33", 
             center={"lat": 0, "lon": 0},
-            projection_scale=10,  
-            fitbounds="locations"
+            projection_scale=2,  
+            fitbounds=None
         ),
         coloraxis_colorbar=dict(
             title="No. of Incidents",
@@ -70,4 +68,6 @@ def heatmap_builder(df, source_list):
             'resolution': 50
         }
     })
+    fig.update_xaxes(fixedrange=True)
+    fig.update_yaxes(fixedrange=True)
     return fig

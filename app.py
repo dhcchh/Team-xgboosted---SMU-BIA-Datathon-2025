@@ -3,6 +3,7 @@ import pandas as pd
 import dash
 from dash import html, dcc, Input, Output
 import dash_cytoscape as cyto
+import plotly.graph_objects as go
 
 # Import visualization functions
 from visualization_utils.Piechart import piechart_builder
@@ -73,15 +74,25 @@ app.layout = html.Div(
             children = [
                 dcc.Graph(
                     id="heatmap-graph",
-                    config={"displayModeBar": True}  
-                ,
-                style={
-                    "display": "flex",
-                    "justifyContent": "center",
-                    "alignItems": "center",
-                    "width": "80%",
-                    "height": "80vh"
-                })
+                    config={"displayModeBar": True},
+                    style={
+                        "display": "flex",
+                        "justifyContent": "center",
+                        "alignItems": "center",
+                        "width": "80%",
+                        "height": "80vh"
+                    }
+                ),
+                dcc.Slider(
+                    id="heatmap-slider",
+                    min=0,
+                    max=50,
+                    step=1,
+                    value=20,
+                    marks={i: str(i) for i in range(0, 51, 10)},
+                    vertical=True,
+                    tooltip={"always_visible": True, "placement": "right"}
+                )
             ]
         ),
         html.P(
@@ -101,10 +112,26 @@ app.layout = html.Div(
             inline=True,
             style={"textAlign": "center", "marginBottom": "10px", "color": FONTCOLOR}
         ),
-        html.Div([
-            dcc.Graph(id="piechart", style={"width": "45%", "display": "inline-block"}),
-            dcc.Graph(id="barchart", style={"width": "45%", "display": "inline-block"})
-        ], style={"display": "flex", "justifyContent": "center", "gap": "20px"}),
+        html.Div(
+            style={
+                "display": "flex",
+                "justifyContent": "center",
+                "width": "80%"
+            },
+            children = [
+                html.Div(
+                    style={
+                        "display": "flex",
+                        "justifyContent": "center",
+                        "width": "80%"
+                    },
+                    children = [
+                        dcc.Graph(id="piechart", style={"width": "50%", "height": "450px", "alignItems": "center"}),
+                        dcc.Graph(id="barchart", style={"width": "50%", "height": "450px", "alignItems": "center"})
+                    ]
+                )
+            ]
+        ),
         html.P(
             "The pie chart displays the proportional distribution of different threat categories. The bar chart "
             "provides the exact count for each category, making it easier to compare specific values.",
@@ -202,10 +229,11 @@ app.layout = html.Div(
 # Heatmap Callback
 @app.callback(
     Output("heatmap-graph", "figure"),
-    Input("heatmap-checkbox", "value")
+    [Input("heatmap-checkbox", "value"),
+     Input("heatmap-slider", "value")]
 )
-def update_heatmap(source_list):
-    return apply_common_aesthetics(heatmap_builder(WORKING_DF, source_list))
+def update_heatmap(source_list, cutoff):
+    return apply_common_aesthetics(heatmap_builder(WORKING_DF, source_list, cutoff))
 
 
 # Pie & Bar Chart Callback

@@ -2,6 +2,14 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 
+CATEGORY_COLUMNS = ['terrorism', 'cyber_security', 'espionage', 'communalism']
+FINAL_COLUMNS = ['Terrorism', 'Cyber Security', 'Espionage', 'Communalism']
+COLOR_MAP = {
+    "Cyber Security": "#636efa",     # Blue (same as pie chart)
+    "Terrorism": "#EF553B",    # Red
+    "Communalism": "#00cc96",  # Green
+    "Espionage": "#ab63fa"     # Purple
+}
 def barchart_builder(df, source):
     """
     Filters the dataframe according to source. Counts the number of entries that belong to each
@@ -17,39 +25,49 @@ def barchart_builder(df, source):
 
     source_df = df.copy()
     source_df = source_df[source_df["source"].isin(source)]
-    category_columns = ['terrorism', 'cyber_security', 'espionage', 'communalism']
-    source_df[category_columns] = source_df[category_columns].astype(int)
-    category_counts = source_df[category_columns].sum()
+    
+    source_df[CATEGORY_COLUMNS] = source_df[CATEGORY_COLUMNS].astype(int)
+    source_df = source_df.rename(
+        columns={
+            'terrorism': 'Terrorism',
+            'cyber_security': 'Cyber Security',
+            'espionage' : 'Espionage',
+            'communalism': 'Communalism'
+        }
+    )
+    category_counts = source_df[FINAL_COLUMNS].sum()
 
     category_counts_df = pd.DataFrame({
         "Category": category_counts.index,
         "Count": category_counts.values
     })
 
-    # Define the color mapping to match the pie chart
-    color_map = {
-        "cyber_security": "#636efa",     # Blue (same as pie chart)
-        "terrorism": "#EF553B",    # Red
-        "communalism": "#00cc96",  # Green
-        "espionage": "#ab63fa"     # Purple
-    }
-
-    # Create bar chart with the same colors
     barchart = px.bar(
         category_counts_df,         
         x="Category",   
         y="Count",
         color="Category",
-        color_discrete_map=color_map  # Apply the same colors as the pie chart
+        color_discrete_map=COLOR_MAP
     )
 
-    # Improve layout for consistency
     barchart.update_layout(
         xaxis_title=None, 
         yaxis_title=None,
-        plot_bgcolor="rgba(0,0,0,0)",  # Transparent background
+        plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)", 
-        font=dict(color="cyan")  # Match font color to maintain contrast
+        font=dict(color="cyan"),
+        legend=dict(
+            x=1.3,  # Move legend to the right (1.0 is the default right edge of the plot)
+            y=0.8,  # Keep the legend vertically centered
+            xanchor="left",  # Anchor the legend's left edge at the x position
+            yanchor="middle",  # Anchor the legend's middle at the y position
+        ),
+        bargap=0.5
     )
+    barchart.update_layout(
+    height=450,  # Set chart height
+    width=800,   # Set chart width
+    )
+    barchart.update_xaxes(showticklabels=False)
 
     return barchart
