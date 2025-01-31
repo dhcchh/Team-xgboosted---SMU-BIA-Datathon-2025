@@ -20,7 +20,7 @@ Follow 2A to download all files into your local machine.
 Make sure your current working directory is set to the folder where you want the files to be located with `cd your\directory`. Following that, clone the repository using the `git clone repo_link`. You should have all necessary files to run the app. 
 ```
 cd /your/path/to/directory/dash_app
-git clone https://github.com/dhcchh/Team-xgboosted---SMU-BIA-Datathon-2025
+git clone git@github.com:dhcchh/Team-xgboosted---SMU-BIA-Datathon-2025.git
 ```
 
 ### B. Set Up the Environment 
