@@ -25,6 +25,8 @@ Make sure your current working directory is set to the folder where you want the
 ```
 cd /your/path/to/directory/dash_app
 git clone git@github.com:dhcchh/Team-xgboosted---SMU-BIA-Datathon-2025.git
+git clone https://github.com/dhcchh/Team-xgboosted---SMU-BIA-Datathon-2025 # if the previous command did not work
+
 ```
 
 ### B. Set Up the Environment 
