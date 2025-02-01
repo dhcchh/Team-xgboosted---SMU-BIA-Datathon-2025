@@ -2,7 +2,7 @@
 
 This project develops **Sentinel**, an innovative analytics solution for the Internal Security Department (ISD), Ministry of Home Affairs, Singapore. It focuses on analyzing unstructured text data, extracting meaningful insights, and presenting them through interactive dashboards and visualisations. The goal is to showcase the feasibility and effectiveness of leveraging data-driven intelligence to enhance security analysis.
 
-It is currently developed by [Chan Ding Hao](https://www.linkedin.com/in/dhchan/), [Lew Choon Hean](https://www.linkedin.com/in/choon-hean-lew-4584782b6/), [Hoo Kai Sng](https://www.linkedin.com/in/kai-sng-hoo-081a3622a/) and [Yip Kai Men](https://www.linkedin.com/in/yipkaimen/). 
+Developed by [Chan Ding Hao](https://www.linkedin.com/in/dhchan/), [Lew Choon Hean](https://www.linkedin.com/in/choon-hean-lew-4584782b6/), [Hoo Kai Sng](https://www.linkedin.com/in/kai-sng-hoo-081a3622a/) and [Yip Kai Men](https://www.linkedin.com/in/yipkaimen/). 
 
 # Setup Instructions to run the Plotly Dash App Locally 
 ---
