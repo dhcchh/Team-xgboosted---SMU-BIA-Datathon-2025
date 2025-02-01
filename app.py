@@ -164,7 +164,7 @@ app.layout = html.Div(
         ),
         html.P(
             "These line charts depict trends in the occurrence of different threats over time."
-            "If a count is zero on the line chart, it means the incident is not classified under that specific category but falls into one of the other three." 
+            " If a count is zero on the line chart, it means the incident is not classified under that specific category but falls into one of the other three." 
             " For example, an incident with a count of zero under Espionage may be classified as Terrorism, Communalism, or Cybersecurity.",
             style={"textAlign": "center", "color": FONTCOLOR, "padding": "10px"}
         ),
