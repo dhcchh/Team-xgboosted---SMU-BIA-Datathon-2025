@@ -10,9 +10,10 @@ It is currently developed by [Chan Ding Hao](https://www.linkedin.com/in/dhchan/
 Ensure you have the following installed. 
 * Python 3.x (Latest version recommended)
 * pip (Python package manager)
+* Git (allows you to download the necessary files from Github) [(installation link)](https://git-scm.com/)
 * Virtual Environment (Optional, **but recommended for dependency isolation**)
 * Web Browser (For viewing the Dash app)
-* An Integrated Development Environment (IDE) like Visual Studio Code, **optional** but makes running the application easier. 
+* An Integrated Development Environment (IDE) like Visual Studio Code, **optional** but makes running the application easier.
 ---
 ## 2. Installation Steps. 
 ### A. Ensure Required Files Are Available 
