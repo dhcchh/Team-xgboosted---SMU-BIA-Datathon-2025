@@ -18,6 +18,9 @@ Ensure you have the following installed.
 ## 2. Installation Steps. 
 ### A. Ensure Required Files Are Available 
 Follow 2A to download all files into your local machine. 
+
+Open a Powershell terminal on your local machine. All commands provided are run in that terminal.
+
 Make sure your current working directory is set to the folder where you want the files to be located with `cd your\directory`. Following that, clone the repository using the `git clone repo_link`. You should have all necessary files to run the app. 
 ```
 cd /your/path/to/directory/dash_app
