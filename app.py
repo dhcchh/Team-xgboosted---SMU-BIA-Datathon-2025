@@ -195,6 +195,7 @@ app.layout = html.Div(
                         "font-size": "18px",  # Larger text
                         "text-valign": "top",  # Move text above node
                         "text-halign": "center",
+                        "text-rotation": "45deg",
                         "text-margin-y": "-12px",  # Offset text upwards
                         "width": "20px",  # Bigger nodes
                         "height": "20px",
@@ -207,7 +208,8 @@ app.layout = html.Div(
                         "target-arrow-color": "#BBBBBB",
                         "target-arrow-shape": "none",
                         "curve-style": "bezier",
-                        "label": "data(rows)"
+                        "label": "data(rows)",
+                        "color": "#FFFF00"
                     }
                 }
             ]
@@ -266,10 +268,11 @@ def update_linechart(source_list):
 # Network Graph Callback
 @app.callback(
     Output("network-graph", "elements"),
-    Input("graph-checkbox", "value")
+    Input("graph-checkbox", "value"),
+    Input("network-graph", "tapNode")
 )
-def update_network_graph(selected_categories):
-    return graph_builder(WORKING_DF, selected_categories)
+def update_network_graph(selected_categories, tapped_node):
+    return graph_builder(WORKING_DF, selected_categories, tapped_node)
 
 
 # Run the Dash app
