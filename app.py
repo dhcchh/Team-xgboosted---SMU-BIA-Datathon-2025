@@ -96,7 +96,9 @@ app.layout = html.Div(
             ]
         ),
         html.P(
-            "This map shows where all TCCE cases in the data provided have happened for each country. "
+            "This map shows where all TCCE (Terrorism, Communalism, Cybersecurity, Espionage)"
+            " cases in the data provided have happened for each country. "
+            "Hover each of the circles to view the exact count of incidents by country. "
             "The legend 'No. of Incidents' corresponds to the number of incidents for each country. "
             "The slider allows you to filter the map by the number of TCCE incidents for each country.",
             style={"textAlign": "center", "color": FONTCOLOR, "padding": "10px"}
