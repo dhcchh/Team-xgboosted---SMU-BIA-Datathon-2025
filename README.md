@@ -23,9 +23,9 @@ Open a Powershell terminal on your local machine. All commands provided are run 
 Make sure your current working directory is set to the folder where you want the files to be located with `cd your\directory`. Following that, clone the repository using the `git clone repo_link`. You should have all necessary files to run the app. 
 ```
 cd /your/path/to/directory/dash_app
-git clone git@github.com:dhcchh/Team-xgboosted---SMU-BIA-Datathon-2025.git
-git clone https://github.com/dhcchh/Team-xgboosted---SMU-BIA-Datathon-2025 # if the previous command did not work
-
+git clone git@github.com:dhcchh/Team-xgboosted---SMU-BIA-Datathon-2025.git .
+git clone https://github.com/dhcchh/Team-xgboosted---SMU-BIA-Datathon-2025 . 
+# use this if the previous command did not work
 ```
 
 ### B. Set Up the Environment 
