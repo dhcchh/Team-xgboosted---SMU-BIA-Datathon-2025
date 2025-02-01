@@ -96,8 +96,9 @@ app.layout = html.Div(
             ]
         ),
         html.P(
-            "This heatmap provides a geographical visualization of threats. Lighter regions indicate higher "
-            "frequency of incidents. This graph helps identify hotspots of threat activity globally.",
+            "This map shows where all TCCE cases in the data provided have happened for each country. "
+            "The legend 'No. of Incidents' corresponds to the number of incidents for each country. "
+            "The slider allows you to filter the map by the number of TCCE incidents for each country.",
             style={"textAlign": "center", "color": FONTCOLOR, "padding": "10px"}
         ),
 
@@ -133,8 +134,9 @@ app.layout = html.Div(
             ]
         ),
         html.P(
-            "The pie chart displays the proportional distribution of different threat categories. The bar chart "
-            "provides the exact count for each category, making it easier to compare specific values.",
+            "The pie chart displays the proportion (%) of different threat categories. The bar"
+            "chart provides the exact count for each category, making it easier to compare specific values."
+            "You can see the exact count by hovering over the bar chart.",
             style={"textAlign": "center", "color": FONTCOLOR, "padding": "10px"}
         ),
 
@@ -159,8 +161,9 @@ app.layout = html.Div(
             style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "20px"}
         ),
         html.P(
-            "These line charts depict trends in the occurrence of different threats over time. By analyzing these graphs, "
-            "you can spot spikes, seasonal variations, or long-term patterns in threat activity.",
+            "These line charts depict trends in the occurrence of different threats over time."
+            "If a count is zero on the line chart, it means the incident is not classified under that specific category but falls into one of the other three." 
+            " For example, an incident with a count of zero under Espionage may be classified as Terrorism, Communalism, or Cybersecurity.",
             style={"textAlign": "center", "color": FONTCOLOR, "padding": "10px"}
         ),
 
@@ -216,7 +219,9 @@ app.layout = html.Div(
         ),
         html.P(
             "This network graph shows the connections between countries based on shared threat incidents. Clusters "
-            "indicate regional connections or geopolitical ties, while isolated nodes represent independent threats.",
+            "indicate regional connections or geopolitical ties."
+            "The nodes (points) on the Network can be dragged by clicking and holding on it."
+            "To find out the exact incidents involved, you can click on the node to find the incident ID by index on the combined table",
             style={"textAlign": "center", "color": FONTCOLOR, "padding": "10px"}
         )
     ]
