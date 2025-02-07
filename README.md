@@ -4,6 +4,9 @@ This project develops **Sentinel**, an innovative analytics solution for the Int
 
 Developed by [Chan Ding Hao](https://www.linkedin.com/in/dhchan/), [Lew Choon Hean](https://www.linkedin.com/in/choon-hean-lew-4584782b6/), [Hoo Kai Sng](https://www.linkedin.com/in/kai-sng-hoo-081a3622a/) and [Yip Kai Men](https://www.linkedin.com/in/yipkaimen/). 
 
+View the detailed proposal [here](./Proposal_Submission_xgboosted.pdf)
+
+
 # Setup Instructions to run the Plotly Dash App Locally 
 ---
 ## 1. Prerequisites
